@@ -1,6 +1,6 @@
 # Project: Maze Capture the Flag
 
-> - **Files:** maze_capture_the_flag.html (English), maze_capture_the_flag_vi.html (original Vietnamese)
+> - **Files:** maze_capture_the_flag.html
 > - **Dates:** 2026-10-25 → 2026-11-04
 > - **Defaults:** Claude · Sonnet 5.5
 > - **Status:** prototype
