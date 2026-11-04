@@ -1,0 +1,187 @@
+<title>Focus Garden</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700&display=swap">
+<style>
+  :root {
+    --bg: #f4efe2; --card: #fffaf0; --ink: #26331f; --muted: #6a7560; --line: #ddd5bf;
+    --accent: #3f8a4a; --accent-ink: #ffffff; --accent2: #2c6a37; --warn: #b4532a;
+    --sky1: #cfe8f2; --sky2: #f4efe2; --grass: #9fd08a; --grass2: #86bd73; --soil: #8a6240; --soil2: #6f4c30; --trunk: #7a5232;
+    --serif: 'Fraunces', Georgia, serif; --sans: 'Nunito', system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #131b14; --card: #1b261c; --ink: #e8f0dc; --muted: #9db094; --line: #2e3d2e; --accent: #6cc17a; --accent-ink: #0d1a10; --accent2: #8fd89b; --warn: #e58a5e;
+    --sky1: #1d3345; --sky2: #1b261c; --grass: #3b6b3d; --grass2: #335c35; --soil: #5a412b; --soil2: #46321f; --trunk: #8c6a46; color-scheme: dark; } }
+  :root[data-theme="dark"] {
+    --bg: #131b14; --card: #1b261c; --ink: #e8f0dc; --muted: #9db094; --line: #2e3d2e; --accent: #6cc17a; --accent-ink: #0d1a10; --accent2: #8fd89b; --warn: #e58a5e;
+    --sky1: #1d3345; --sky2: #1b261c; --grass: #3b6b3d; --grass2: #335c35; --soil: #5a412b; --soil2: #46321f; --trunk: #8c6a46; color-scheme: dark; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.45; min-height: 100vh;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 48px; }
+  .wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  header { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; }
+  h1 { font: 700 clamp(30px, 7vw, 44px)/1.05 var(--serif); margin: 0; text-wrap: balance; }
+  .sub { margin: 4px 0 0; color: var(--muted); }
+  .count { font: 600 22px var(--serif); color: var(--accent2); }
+  .garden { border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: var(--card); }
+  .garden svg { display: block; width: 100%; height: auto; max-width: 100%; }
+  .sway { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 5s ease-in-out infinite; }
+  @keyframes sway { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.2deg); } }
+  @media (prefers-reduced-motion: reduce) { .sway { animation: none; } }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+  .time { font: 700 clamp(52px, 16vw, 88px)/1 var(--serif); font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+  .status { margin: 0; color: var(--muted); min-height: 1.4em; }
+  .bar { width: 100%; height: 10px; border-radius: 6px; background: var(--line); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .4s linear; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; }
+  button { font-family: var(--sans); cursor: pointer; }
+  button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .btn { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 14px; font: 700 18px var(--sans); padding: 12px 28px; }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .ghost { background: transparent; color: var(--ink); border: 2px solid var(--line); border-radius: 14px; font: 600 15px var(--sans); padding: 9px 18px; }
+  .ghost.warn { border-color: var(--warn); color: var(--warn); }
+  .opt { display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: 14px; text-align: left; }
+  .opt input { width: 18px; height: 18px; accent-color: var(--accent); }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 10px 8px; text-align: center; }
+  .stat b { display: block; font: 700 26px var(--serif); color: var(--accent2); }
+  .stat span { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .note { color: var(--muted); font-size: 14px; margin: 0; }
+  [hidden] { display: none !important; }
+</style>
+
+<main class="wrap">
+  <header>
+    <div>
+      <h1>Focus Garden</h1>
+      <p class="sub">One hour of focus grows one tree. Ten trees make a full garden.</p>
+    </div>
+    <div class="count" id="count" aria-live="polite"></div>
+  </header>
+
+  <section class="garden" aria-label="Your garden"><svg id="scene" viewBox="0 0 600 340" role="img" aria-label="Garden with 10 plots"></svg></section>
+
+  <section class="panel" aria-label="Focus timer">
+    <div class="time" id="time">1:00:00</div>
+    <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+    <p class="status" id="status" role="status"></p>
+    <div class="row">
+      <button class="btn" id="start" type="button">Plant a tree</button>
+      <button class="ghost warn" id="giveup" type="button" hidden>Give up</button>
+      <button class="btn" id="newgarden" type="button" hidden>Start a new garden</button>
+    </div>
+    <label class="opt" id="demoRow"><input type="checkbox" id="demo"> Demo mode: start with 9 trees grown and a 1-minute session (your real garden is kept safe)</label>
+  </section>
+
+  <section class="stats" aria-label="Totals">
+    <div class="stat"><b id="sTrees">0</b><span>Trees grown</span></div>
+    <div class="stat"><b id="sHours">0</b><span>Focus hours</span></div>
+    <div class="stat"><b id="sGardens">0</b><span>Gardens done</span></div>
+  </section>
+  <p class="note">Your garden is saved in this browser. Closing the tab doesn't stop a running session; if the hour passes while it's closed, the tree still counts when you come back. Giving up wilts the sapling and no tree is added.</p>
+</main>
+
+<script>
+(function () {
+  var KEY = 'focusGarden.v1', FULL = 10, HOUR = 3600000, DEMO = 60000;
+  var $ = function (id) { return document.getElementById(id); };
+  var st = { trees: [], hours: 0, gardens: 0, session: null, demo: false, backup: null };
+  try { var raw = localStorage.getItem(KEY); if (raw) { var o = JSON.parse(raw); if (o && Array.isArray(o.trees)) st = { trees: o.trees.slice(0, FULL), hours: +o.hours || 0, gardens: +o.gardens || 0, session: o.session || null, demo: !!o.demo, backup: o.backup || null }; } } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+
+  /* ---- tree art: base at (0,0), full height about 105 units ---- */
+  var TYPES = [
+    { n: 'Oak', c: ['#4f9a4a', '#5fae57'], k: 'round' }, { n: 'Pine', c: ['#2f7a4c', '#3d8f5b'], k: 'cone' },
+    { n: 'Cherry', c: ['#f4a6c0', '#f7bfd2'], k: 'round' }, { n: 'Birch', c: ['#8fc660', '#a5d675'], k: 'tall', t: '#e9e4d4' },
+    { n: 'Maple', c: ['#d9622e', '#ea7f3d'], k: 'round' }, { n: 'Spruce', c: ['#2c6a7a', '#3a8196'], k: 'cone' },
+    { n: 'Willow', c: ['#7fb86a', '#97cc7f'], k: 'willow' }, { n: 'Jacaranda', c: ['#a58be0', '#bba6ef'], k: 'round' },
+    { n: 'Ginkgo', c: ['#e8c43a', '#f2d65e'], k: 'tall' }, { n: 'Plum', c: ['#9a4f86', '#b56aa0'], k: 'round' }
+  ];
+  function el(tag, a, kids) { return '<' + tag + ' ' + a + '>' + (kids || '') + '</' + tag + '>'; }
+  function treeSVG(idx, p, wilted) {
+    var ty = TYPES[idx % TYPES.length], c1 = ty.c[0], c2 = ty.c[1], trunk = ty.t || 'var(--trunk)', s = '';
+    if (wilted) return el('g', '', el('path', 'd="M0 0 C-2 -10 2 -16 4 -22" stroke="#8a7a52" stroke-width="3" fill="none" stroke-linecap="round"') + el('path', 'd="M4 -22 q10 2 12 10 q-10 0 -12 -10z" fill="#a58c52"') + el('path', 'd="M1 -12 q-9 0 -11 8 q9 1 11 -8z" fill="#a58c52"'));
+    if (p < .12) return el('g', '', el('ellipse', 'cx="0" cy="-3" rx="9" ry="5" fill="var(--soil2)"') + el('circle', 'cx="0" cy="-8" r="2.5" fill="#c9a36a"'));
+    if (p < .3) return el('g', '', el('path', 'd="M0 0 L0 -18" stroke="#5a9a4a" stroke-width="3" stroke-linecap="round"') + el('path', 'd="M0 -14 q-12 -2 -14 -12 q12 0 14 12z" fill="#6fba5a"') + el('path', 'd="M0 -18 q12 -2 14 -12 q-12 0 -14 12z" fill="#7fca66"'));
+    var sc = .32 + .68 * Math.pow((p - .3) / .7, .8);
+    s += el('rect', 'x="-5" y="-46" width="10" height="46" rx="3" fill="' + trunk + '"');
+    if (ty.k === 'cone') {
+      s += el('path', 'd="M-34 -26 L0 -66 L34 -26z" fill="' + c1 + '"') + el('path', 'd="M-28 -52 L0 -88 L28 -52z" fill="' + c2 + '"') + el('path', 'd="M-20 -76 L0 -108 L20 -76z" fill="' + c1 + '"');
+    } else if (ty.k === 'tall') {
+      s += el('ellipse', 'cx="0" cy="-66" rx="22" ry="40" fill="' + c1 + '"') + el('ellipse', 'cx="-6" cy="-72" rx="12" ry="26" fill="' + c2 + '"');
+      if (ty.t) s += el('path', 'd="M-3 -8 h6 M-3 -22 h6 M-3 -34 h5" stroke="#4a4a3a" stroke-width="2"');
+    } else if (ty.k === 'willow') {
+      s += el('ellipse', 'cx="0" cy="-70" rx="36" ry="26" fill="' + c1 + '"');
+      for (var i = -4; i <= 4; i++) s += el('path', 'd="M' + (i * 8) + ' -60 q' + (i > 0 ? 3 : -3) + ' 24 0 40" stroke="' + c2 + '" stroke-width="4" fill="none" stroke-linecap="round"');
+    } else {
+      s += el('circle', 'cx="0" cy="-70" r="32" fill="' + c1 + '"') + el('circle', 'cx="-22" cy="-54" r="22" fill="' + c1 + '"') + el('circle', 'cx="22" cy="-54" r="22" fill="' + c1 + '"') + el('circle', 'cx="-8" cy="-78" r="16" fill="' + c2 + '"');
+    }
+    return el('g', 'transform="scale(' + sc.toFixed(3) + ')"', s);
+  }
+  var POS = []; for (var r = 0; r < 2; r++) for (var q = 0; q < 5; q++) POS.push({ x: 66 + q * 117 + (r ? 30 : 0) - (r ? 18 : 0), y: r ? 306 : 196 });
+
+  var wiltIdx = -1, wiltUntil = 0;
+  function scene(now) {
+    var s = '<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky1)"/><stop offset="1" stop-color="var(--sky2)"/></linearGradient></defs>';
+    s += '<rect width="600" height="340" fill="url(#sky)"/>';
+    s += '<circle cx="520" cy="52" r="26" fill="#ffd966" opacity=".85"/>';
+    s += '<path d="M0 150 Q150 110 300 140 T600 130 V340 H0z" fill="var(--grass2)"/><path d="M0 180 Q200 150 400 175 T600 170 V340 H0z" fill="var(--grass)"/>';
+    var cur = st.session ? Math.min(1, (now - st.session.start) / st.session.len) : -1, slot = st.trees.length;
+    for (var i = 0; i < FULL; i++) {
+      var P = POS[i], inner = '';
+      s += el('ellipse', 'cx="' + P.x + '" cy="' + P.y + '" rx="40" ry="11" fill="var(--soil)"') + el('ellipse', 'cx="' + P.x + '" cy="' + (P.y - 2) + '" rx="32" ry="7" fill="var(--soil2)" opacity=".5"');
+      if (i < st.trees.length) inner = el('g', 'class="sway" style="animation-delay:' + (-i * .7) + 's"', treeSVG(st.trees[i], 1));
+      else if (i === slot && st.session) inner = el('g', '', treeSVG(st.session.type, cur));
+      else if (i === wiltIdx && now < wiltUntil) inner = treeSVG(0, 0, true);
+      if (inner) s += el('g', 'transform="translate(' + P.x + ' ' + (P.y - 2) + ') scale(.78)"', inner);
+      else s += el('text', 'x="' + P.x + '" y="' + (P.y + 4) + '" text-anchor="middle" font-size="12" fill="var(--muted)" opacity=".8"', String(i + 1));
+    }
+    $('scene').innerHTML = s;
+  }
+
+  function fmt(ms) { var t = Math.max(0, Math.ceil(ms / 1000)), h = Math.floor(t / 3600), m = Math.floor(t % 3600 / 60), sec = t % 60; return h + ':' + (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec; }
+  var msg = '';
+  function ui(now) {
+    var full = st.trees.length >= FULL, run = !!st.session;
+    $('count').textContent = st.trees.length + ' / ' + FULL + ' trees';
+    $('sTrees').textContent = st.trees.length + st.gardens * FULL; $('sGardens').textContent = st.gardens; $('sHours').textContent = Math.round(st.hours * 10) / 10;
+    $('start').hidden = run || full; $('giveup').hidden = !run; $('newgarden').hidden = !full; $('demoRow').hidden = run; $('demo').checked = st.demo;
+    if (run) {
+      var left = st.session.len - (now - st.session.start);
+      $('time').textContent = fmt(left); $('bar').style.width = Math.min(100, (now - st.session.start) / st.session.len * 100) + '%';
+      $('status').textContent = 'Growing a ' + TYPES[st.session.type % TYPES.length].n + (st.demo ? ' (demo: 1 minute)' : '') + '. Stay with it.';
+    } else {
+      $('time').textContent = full ? 'Full!' : '1:00:00'; $('bar').style.width = full ? '100%' : '0';
+      $('status').textContent = msg || (full ? 'Your garden is complete. Plant a new one when you are ready.' : 'Ready when you are. One hour, one tree.');
+    }
+  }
+  function tick() {
+    var now = Date.now();
+    if (st.session && now - st.session.start >= st.session.len) {
+      st.trees.push(st.session.type); if (!st.demo) st.hours += 1;
+      msg = 'A ' + TYPES[st.session.type % TYPES.length].n + ' tree grew! ' + (st.trees.length >= FULL ? 'Your garden is full.' : (FULL - st.trees.length) + ' to go.');
+      st.session = null; save();
+    }
+    scene(now); ui(now);
+  }
+  $('start').addEventListener('click', function () {
+    if (st.session || st.trees.length >= FULL) return;
+    msg = ''; wiltIdx = -1;
+    st.session = { start: Date.now(), len: st.demo ? DEMO : HOUR, type: st.trees.length }; save(); tick();
+  });
+  var confirming = false, ct = 0;
+  $('giveup').addEventListener('click', function () {
+    var b = $('giveup');
+    if (!confirming) { confirming = true; b.textContent = 'Really give up?'; ct = setTimeout(function () { confirming = false; b.textContent = 'Give up'; }, 4000); return; }
+    clearTimeout(ct); confirming = false; b.textContent = 'Give up';
+    wiltIdx = st.trees.length; wiltUntil = Date.now() + 6000; st.session = null; msg = 'The sapling wilted. Plant another whenever you are ready.'; save(); tick();
+  });
+  $('newgarden').addEventListener('click', function () { if (st.demo) { st.trees = [0,1,2,3,4,5,6,7,8]; msg = 'Demo reset: 9 trees grown.'; save(); return tick(); } st.gardens++; st.trees = []; msg = 'A fresh garden. Plant your first tree.'; save(); tick(); });
+  $('demo').addEventListener('change', function () {
+    if (st.session) { $('demo').checked = st.demo; return; }
+    if ($('demo').checked && !st.demo) { st.backup = { trees: st.trees.slice(), hours: st.hours, gardens: st.gardens }; st.trees = [0,1,2,3,4,5,6,7,8]; st.demo = true; msg = 'Demo mode: 9 trees grown. Plant the last one (1 minute).'; }
+    else if (!$('demo').checked && st.demo) { var b = st.backup || { trees: [], hours: 0, gardens: 0 }; st.trees = b.trees; st.hours = b.hours; st.gardens = b.gardens; st.backup = null; st.demo = false; msg = 'Back to your real garden.'; }
+    wiltIdx = -1; save(); tick();
+  });
+  tick(); setInterval(tick, 500);
+})();
+</script>
