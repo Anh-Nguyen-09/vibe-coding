@@ -17,8 +17,8 @@ Note: this file only includes the first prompt. A follow-up message added the de
 
 > - **Tool:** Claude · Sonnet 5.5 · 2026-11-04
 > - **Session:** continued · attached: none
-> - **Verified:** agent-tested
-> - **Human edits:** none
+> - **Verified:** human-tested
+> - **Human edits:** none (Verified raised to human-tested after I played it myself 2026-11-04)
 
 generate me a focus garden growing app. each section (1 hour) complete can grow 1 tree. a total 10 trees make a full garden
 

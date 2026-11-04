@@ -19,8 +19,8 @@ Background: this is a single-player preview of a two-team capture-the-flag game.
 
 > - **Tool:** Claude · Sonnet 5.5 · 2026-10-25
 > - **Session:** continued · attached: none
-> - **Verified:** not-run
-> - **Human edits:** none (the prompt and output were originally written in Vietnamese; translated to English for this repo)
+> - **Verified:** human-tested
+> - **Human edits:** none (the prompt and output were originally written in Vietnamese; translated to English for this repo; Verified raised to human-tested after I played it myself 2026-11-04)
 
 Earlier in this chat I had tried a dice-duel idea and wanted something different. This is where the capture-the-flag game started.
 
@@ -89,8 +89,8 @@ Reply to these 4 questions (or just say "use your defaults") and I'll start buil
 
 > - **Tool:** Claude · Sonnet 5.5 · 2026-10-26
 > - **Session:** continued · attached: none
-> - **Verified:** agent-tested
-> - **Human edits:** none (the prompt and output were originally written in Vietnamese; translated to English for this repo)
+> - **Verified:** human-tested
+> - **Human edits:** none (the prompt and output were originally written in Vietnamese; translated to English for this repo; Verified raised to human-tested after I played it myself 2026-11-04)
 
 Cut the time down to 5 minutes, keep only the Attack and Defend commands, and make the map like the one in Astraeum, where you move around a layout with obstacles (you can't walk through walls). Make it a dungeon-style maze with lots of nooks and corners, but still divided into rooms that can be chosen as a base. Rooms that aren't chosen have no special effect and are just normal rooms, and every room gets a random item or chest each time. At the start of the match you can choose one fixed character to be the leader. You can steer the leader through the maze to find items (they can heal, or boost attack/defense depending on the type) and lead 6 teammates who follow along to attack together. The other 5 characters stay behind to guard the flag, and you also choose a leader for the defense team that you can switch to when needed. Both sides explore and grab chests/items while searching for the room holding the opponent's flag so they can steal it. Scoring stays the same. Add an Interact button so a leader can steal the flag or take it back. While carrying the flag home you can still fight to win it back. The controls are: move in 4 directions, switch leader (to watch and direct either the defense or the attack team), interact to pick up the flag, retreat (when you want the team to steady its formation), and attack (when facing the enemy team). Leaders who aren't being steered still automatically follow their team's role, and when you press Attack they fight automatically like the other characters. Characters do one basic attack and then use an elemental skill (3s cooldown).
 
@@ -126,8 +126,8 @@ Play a few matches and tell me what feels worst (speed, bot difficulty, sight ra
 
 > - **Tool:** Claude · Sonnet 5.5 · 2026-11-04
 > - **Session:** continued · attached: none
-> - **Verified:** agent-tested
-> - **Human edits:** none
+> - **Verified:** human-tested
+> - **Human edits:** none (Verified raised to human-tested after I played it myself 2026-11-04)
 
 convert to english
 

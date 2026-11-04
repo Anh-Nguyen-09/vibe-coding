@@ -17,8 +17,8 @@ Note: this project started from an earlier 1-vs-1 prototype built in the same ch
 
 > - **Tool:** Claude · Sonnet 5.5 · 2026-11-04
 > - **Session:** continued · attached: none
-> - **Verified:** agent-tested
-> - **Human edits:** none
+> - **Verified:** human-tested
+> - **Human edits:** none (Verified raised to human-tested after I played it myself 2026-11-04)
 
 generate me a cards fighting turn based game using the 12 zodiac sprites as card photos. each with a different element (7) and fighting in 2 teams. each teams has 3 cards. each round throw 7 dices with 8 faces of 7 element and an omni one. card can be played with the amount of same element dice as the requirement on card (ex: cancer is hydro (water) element and required 3 hydro dices to activate elemental skills, 3 hydro dices must be achieved if wanting to use cancer to attack). each card require 3-4 dices to activate elemental skill and 2 to active normal physical attack.
 
@@ -40,8 +40,8 @@ The Zodiac Team Duel is published: a 3v3 card battle against a bot, using the 12
 
 > - **Tool:** Claude · Sonnet 5.5 · 2026-11-04
 > - **Session:** continued · attached: none
-> - **Verified:** agent-tested
-> - **Human edits:** none
+> - **Verified:** human-tested
+> - **Human edits:** none (Verified raised to human-tested after I played it myself 2026-11-04)
 
 I want the ui to be separate. choose cards -> flip coin to decide whose play first -> play screen (with cards on table) -> choose dice with rolling animation -> back to play screen -> take turn to play (15s choosing time)
 
@@ -61,8 +61,8 @@ The dice screen repeats at the start of every round.
 
 > - **Tool:** Claude · Sonnet 5.5 · 2026-11-04
 > - **Session:** continued · attached: none
-> - **Verified:** agent-tested
-> - **Human edits:** none
+> - **Verified:** human-tested
+> - **Human edits:** none (Verified raised to human-tested after I played it myself 2026-11-04)
 
 i forgot to say, each round has 3 turns, and you can choose to skip if not have suitable dices to play. fix so each normal skill require 1 same elemental dice as the character and one is not (2 dices total to activate skill) and elemental skills require 2 same elemental dices and one is not (3 dices total). add animation for the attacks. fix the icon of anemo to be wind blowing instead of that swirl symbol
 
